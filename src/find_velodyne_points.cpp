@@ -55,6 +55,7 @@ Eigen::Matrix3d lidarToCamera;
 void callback_noCam(const sensor_msgs::PointCloud2ConstPtr& msg_pc,
 					const lidar_camera_calibration::marker_6dof::ConstPtr& msg_rt)
 {
+	ROS_INFO_STREAM("In callback_noCam");
 	ROS_INFO_STREAM("Velodyne scan received at " << msg_pc->header.stamp.toSec());
 	ROS_INFO_STREAM("marker_6dof received at " << msg_rt->header.stamp.toSec());
 
@@ -172,9 +173,13 @@ int main(int argc, char** argv)
 		std::cout << "done1\n";
 
 		typedef sync_policies::ApproximateTime<sensor_msgs::CameraInfo, sensor_msgs::PointCloud2, lidar_camera_calibration::marker_6dof> MySyncPolicy;
-		Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), info_sub, cloud_sub, rt_sub);
-		sync.registerCallback(boost::bind(&callback, _1, _2, _3));
+		std::cout << "done2\n";
 
+		Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), info_sub, cloud_sub, rt_sub);
+		std::cout << "done3\n";
+
+		sync.registerCallback(boost::bind(&callback, _1, _2, _3));
+		std::cout << "done4\n";
 		ros::spin();
 	}
 	else
@@ -187,6 +192,7 @@ int main(int argc, char** argv)
 
 		typedef sync_policies::ApproximateTime<sensor_msgs::PointCloud2, lidar_camera_calibration::marker_6dof> MySyncPolicy;
 		Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), cloud_sub, rt_sub);
+		ROS_INFO_STREAM("before registerCallback");
 		sync.registerCallback(boost::bind(&callback_noCam, _1, _2));
 
 		ros::spin();

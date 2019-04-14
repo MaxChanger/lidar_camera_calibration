@@ -144,7 +144,7 @@ void getCorners(cv::Mat img, pcl::PointCloud<pcl::PointXYZ> scan, cv::Mat P, int
 						cv::imshow("cloud", image_edge_laser);
 						cv::waitKey(0);
 						++collected;
-						//std::cout << _point_.x << " " << _point_.y << "\n";
+						std::cout << _point_.x << " " << _point_.y << "\n";
 						polygon.push_back(_point_);
 				}
 				stored_corners.push_back(polygon);
